@@ -1,0 +1,4 @@
+﻿  ReceiveBT.c
+c:\users\dell\desktop\micromousegit\vstudio simulations\micromouse\micromouse\receivebt.c(77): warning C4098: 'getSetData': 'void' function returning a value
+  Micromouse.vcxproj -> C:\Users\Dell\Desktop\MicromouseGit\Vstudio simulations\Micromouse\Debug\Micromouse.exe
+  Micromouse.vcxproj -> C:\Users\Dell\Desktop\MicromouseGit\Vstudio simulations\Micromouse\Debug\Micromouse.pdb (Partial PDB)

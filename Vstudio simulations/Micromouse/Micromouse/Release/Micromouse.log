@@ -1,0 +1,17 @@
+﻿  floodfill.c
+  GenerateMaze.c
+GenerateMaze.c(244): warning C4101: 'randNum': unreferenced local variable
+  HeaderFileLayout.c
+  main.c
+main.c(14): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
+main.c(18): warning C4013: 'GenerateWall' undefined; assuming extern returning int
+  Maze.c
+Maze.c(86): warning C4101: 'ucColumn': unreferenced local variable
+Maze.c(86): warning C4101: 'ucRow': unreferenced local variable
+  SourceFileLayout.c
+  Stack.c
+  Generating code
+  All 29 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Micromouse.vcxproj -> C:\Users\Dell\Desktop\MicromouseGit\Vstudio simulations\Micromouse\Release\Micromouse.exe
+  Micromouse.vcxproj -> C:\Users\Dell\Desktop\MicromouseGit\Vstudio simulations\Micromouse\Release\Micromouse.pdb (Full PDB)
