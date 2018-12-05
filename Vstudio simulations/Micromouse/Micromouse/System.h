@@ -12,6 +12,7 @@ Purpose: Header file for the whole system. For anything that will be used
 ---------------------------------------------------------------------------- */
 #define MAX_RC_SIZE	16
 typedef unsigned char uint8_t;
+
 /* ----------------------------------------------------------------------------
 	Place global variables here
 ---------------------------------------------------------------------------- */
@@ -22,13 +23,14 @@ extern uint8_t Wall[MAX_RC_SIZE][MAX_RC_SIZE];
 extern uint8_t GeneratedMaze[MAX_RC_SIZE][MAX_RC_SIZE];
 extern uint8_t GeneratedWall[MAX_RC_SIZE][MAX_RC_SIZE];
 
-
+typedef enum { false, true } bool;
 enum enCardinalDirection
 {
 	enNorth = 0x01,
 	enEast = 0x02,
 	enSouth = 0x04,
 	enWest = 0x08,
+	enAllWall = 0x0F,
 	enVisited = 0x10,
 	enInStack = 0x20,
 };
@@ -81,11 +83,12 @@ void initMaze(void);
 void initGoalMaze(uint8_t row, uint8_t column);
 void displayWall(void);
 void displayMaze(void);
-void displayRealWall(void);
+void displayRealWall(uint8_t, uint8_t, uint8_t, uint8_t, enum enCardinalDirection);
 void displayRealWallNum(void);
 void initGeneratedWall(void);
+void GenerateWall(void);
 void displayGeneratedWall(void);
-void displayRealGeneratedWall(void);
+void displayRealGeneratedWall(uint8_t, uint8_t, uint8_t, uint8_t);
 int smallestOpenNeighbor(void);
 void pushOpenNeighbors(void);
 void floodFill(uint8_t DesiredRow, uint8_t DesiredCol, uint8_t initRow, uint8_t initCol);

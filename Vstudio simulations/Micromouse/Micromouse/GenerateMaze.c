@@ -64,7 +64,11 @@ uint8_t GeneratedWall[MAX_RC_SIZE][MAX_RC_SIZE] = { 0 };
 *
 *----------------------------------------------------------------------------*/
 
-// Populate the Generated Wall
+/*	-------------------------------------------------------
+	Initilaize GeneratedWall[][] to have all four walls(north,east,south,west)
+	except the goal(the middle four cell) and the beginning cell. 
+	------------------------------------------------------- 
+*/
 void initGeneratedWall(void)
 {
 	uint8_t row, column;
@@ -72,65 +76,63 @@ void initGeneratedWall(void)
 	{
 		for (column = 0; column < MAX_RC_SIZE; column++)
 		{
-			/*if (column == 0) GeneratedWall[row][column] |= enWest;
-			if (column == 15) GeneratedWall[row][column] |= enEast;
-			if (row == 0) GeneratedWall[row][column] |= enNorth;
-			if (row == 15) GeneratedWall[row][column] |= enSouth;*/
-			// A=10,B=11,C=12,D=13,E=14,F=15
-			if (column == 0 && row == 15){ GeneratedWall[row][column] = 0x0E; }
-			else if (column == 0 && row == 14)GeneratedWall[row][column] = 0x0B;
-			else if (column == 1 && row == 15)GeneratedWall[row][column] = 0x0C;
-			else {GeneratedWall[row][column] = 0x0F;}
-			
+			//init all cell to have all four walls 
+			GeneratedWall[row][column] = enAllWall;
 		}
-
 	}
+	//*--*
+	//|  |
+	//*  *
+	//|  |
+	//*--*  bottom left 
+	GeneratedWall[15][0] = 0x0E;
+	GeneratedWall[14][0] = 0x0B;
+	//*--*--*
+	//|     |
+	//*  *  *
+	//|     |
+	//*--*--*  Middle 4 cells
 	GeneratedWall[7][8] = 0x33;
 	GeneratedWall[7][7] = 0x39;
 	GeneratedWall[8][7] = 0x3c;
 	GeneratedWall[8][8] = 0x36;
 }
-
+/*	-------------------------------------------------------
+	The GenerateWall generates a solvable micromouse maze the size of 16x16
+	in GeneratedWall[][].  
+	------------------------------------------------------*/	
 void GenerateWall(void)
 {
-	// Use recursive algorithm
-	
 	static uint8_t row, column;
 	static uint8_t SelectRandomFrontier;
-	//pushRowColumn(13, 0);
-	//pushRowColumn(14, 1);
-	//pushRowColumn(15, 2);
-	pushRowColumn(6, 8);
-
+	pushRowColumn(6, 8,true);
+	uint8_t largest = 0;
 	/*
 		While there are frontiers,
-			pop a random frontier
-			check to see how many visited maze cell are connected with it,
-			if there are more than one:
-			then choose randomly which is going to be connected to it.
-			update cell to be visited and push its unvisited neighbors.
-			
+		pop a random frontier
+		check to see how many visited maze cell are connected with it,
+		if there are more than one:
+		then choose randomly which is going to be connected to it.
+		update cell to be visited and push its unvisited neighbors.
 	*/
-	//printf("if empty: %d \n", stempty());
-	uint8_t largest = 0;
 	while (!stempty()) // while stack is not empy
 	{
 		// Select a random Frontier selected by randomly selecting an index;
-		
 		SelectRandomFrontier = rand() % (stStack.iTop + 1);
-		// printf("%d \n", SelectRandomFrontier);
-		printf("%d \n", largest);
+		//printf("%d \n", SelectRandomFrontier);
+		//printf("%d \n", largest);
 		if (stStack.iTop > largest) largest = stStack.iTop;
 		popIndex(&gstRowColumn, SelectRandomFrontier);
 		checkForVisitedNeighbors(gstRowColumn.cRow,gstRowColumn.cColumn);
 		pushUnvisitedNeighbors(gstRowColumn.cRow, gstRowColumn.cColumn);
 		//displayRealGeneratedWall();
 		//system("Pause");
-		// Check to see if it has any visited cells are connected 
-
 	}
-	displayRealGeneratedWall();
-	system("Pause");
+	//*--*--* convert	*--*--*
+	//|  |  |    to		|     | 
+	//*--*--*--  ->		*  *  *--
+	//|					|  |
+	//*--*--*--			*--*--*--
 	if ((GeneratedWall[15][0] & enEast) != enEast)
 	{
 		GeneratedWall[15][0] |= enEast;
@@ -141,13 +143,12 @@ void GenerateWall(void)
 		GeneratedWall[14][1] &= ~enWest;
 		GeneratedWall[14][1] &= ~enSouth;
 	}
-
 }
 
 void checkForVisitedNeighbors(uint8_t row, uint8_t column)
 {
 	uint8_t counter = 0;
-	uint8_t wallToCheckFlags = 0x0F;
+	uint8_t wallToCheckFlags = enAllWall;
 	uint8_t connectableWalls = 0;
 	uint8_t randNum;
 	uint8_t iterate = 0;
@@ -156,9 +157,9 @@ void checkForVisitedNeighbors(uint8_t row, uint8_t column)
 	if (row == 15) wallToCheckFlags &= ~(enSouth);
 	if (column == 15) wallToCheckFlags &= ~(enEast);
 	if (row == 6 && (column == 7)) wallToCheckFlags &= ~(enSouth);
-	if (column == 9 && (row == 7 || row == 8)) wallToCheckFlags &= ~(enWest);
+	if ((row == 7 || row == 8) && column == 9 ) wallToCheckFlags &= ~(enWest);
 	if (row == 9 && (column == 7 || column == 8)) wallToCheckFlags &= ~(enNorth);
-	if (column == 6 && (row == 7 || row == 8)) wallToCheckFlags &= ~(enEast);
+	if ((row == 7 || row == 8) && column == 6) wallToCheckFlags &= ~(enEast);
 
 	if (wallToCheckFlags & enNorth)	// if we can check the cell north of us
 	{
@@ -239,7 +240,7 @@ void checkForVisitedNeighbors(uint8_t row, uint8_t column)
 void pushUnvisitedNeighbors(uint8_t row, uint8_t column)
 {
 	//uint8_t counter = 0;
-	uint8_t PushableWalls = 0x0F;
+	uint8_t PushableWalls = enAllWall;
 	uint8_t connectableWalls = 0;
 	uint8_t randNum;
 	if (row == 0) PushableWalls &= ~(enNorth);
@@ -249,24 +250,24 @@ void pushUnvisitedNeighbors(uint8_t row, uint8_t column)
 
 	if (PushableWalls & enNorth)	// if we can check the cell north of us
 	{
-		pushRowColumn(row - 1, column);
+		pushRowColumn(row - 1, column, true);
 	}
 	if (PushableWalls & enEast)	// if we can check the cell east of us
 	{
-		pushRowColumn(row , column + 1);
+		pushRowColumn(row , column + 1, true);
 	}
 	if (PushableWalls & enSouth)	// if we can check the cell south of us
 	{
-		pushRowColumn(row + 1, column);
+		pushRowColumn(row + 1, column, true);
 	}
 	if (PushableWalls & enWest)	// if we can check the cell west of us
 	{
-		pushRowColumn(row , column - 1);
+		pushRowColumn(row , column - 1, true);
 	}
 
 }
 
-void displayRealGeneratedWall(void)
+void displayRealGeneratedWall(uint8_t currentRow, uint8_t currentCol, uint8_t goalRow, uint8_t goalCol)
 {
 	uint8_t row, column;
 	for (row = 0; row < 33; row++)
@@ -289,8 +290,6 @@ void displayRealGeneratedWall(void)
 				{
 					printf(" ");
 				}
-
-
 			}
 			else if ((row % 2 == 0) && (column % 2 == 1))
 			{
@@ -306,16 +305,12 @@ void displayRealGeneratedWall(void)
 			}
 			else if ((row % 2 == 1) && (column % 2 == 1))	// comment this if statement out later
 			{
-				//printf("--");
-				if ((GeneratedWall[row / 2][(column) / 2] & 0x10))	// part of the maze
+				if (row / 2 == currentRow && (column) / 2 == currentCol)	// if iteration is at current robot location
 				{
-					//printf("v ");
-					printf("  ");
+					printf("x ");
 				}
-				else if ((GeneratedWall[row / 2][(column) / 2] & 0x20))	// part of the maze
-				{
-					//printf("s ");
-					printf("  ");
+				else if (row / 2 == goalRow && (column) / 2 == goalCol) {	// if iteration at robot goal
+					printf("G ");
 				}
 				else
 				{
@@ -326,7 +321,6 @@ void displayRealGeneratedWall(void)
 			{
 				printf("  ");
 			}
-
 		}
 		printf("\n");
 	}

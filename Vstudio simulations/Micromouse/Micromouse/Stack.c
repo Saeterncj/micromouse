@@ -29,8 +29,10 @@ char isFull() {
 	else
 		return 0;	// 
 }
-
-void pushRowColumn(int row, int column) {
+/*
+	// Pushing is different when generating wall
+*/
+void pushRowColumn(int row, int column,bool isGeneratingWall) {
 	//stStack.iTop++;
 	if (isFull())
 	{
@@ -38,59 +40,23 @@ void pushRowColumn(int row, int column) {
 	}
 	else
 	{
-		if (GeneratedWall[row][column] & enInStack)
+		if (GeneratedWall[row][column] & enInStack && isGeneratingWall)
 		{
 			//if it is already in the stack, dont push it.
-			printf(" im in stack already \n");
+			//printf(" im in stack already \n");
 		}
 		else
 		{
 			stStack.cRow[++stStack.iTop] = row;
 			stStack.cColumn[stStack.iTop] = column;
 			//printf("pushing \n");
-			
 		}
 	}
-	GeneratedWall[row][column] |= 0x20;
-	
-	//Set its push bit.
-	// possibly implement pop to un-set the bit
-	// for the sake of generating the maze, All index will be pushed in once
-	// Therefore the Stack size doesnt need to be big.
-	
-	
-}
-void pushRegRowColumn(int row, int column) {
-	//stStack.iTop++;
-	if (isFull())
-	{
-		// if full return nothing 
-		printf("Im FULLLL!!!!!!!!!!\n");
-		system("Pause");
-	}
+	if(isGeneratingWall)
+		GeneratedWall[row][column] |= enInStack;
 	else
-	{
-		//if (Wall[row][column] & enInStack)
-		if(0)
-		{
-			//if it is already in the stack, dont push it.
-			printf(" im in stack already \n");
-		}
-		else
-		{
-			stStack.cRow[++stStack.iTop] = row;
-			stStack.cColumn[stStack.iTop] = column;
-			//printf("pushing row: %d \t column: %d\n",row, column);
-
-		}
-	}
-	Wall[row][column] |= 0x20;
-
+		Wall[row][column] |= enInStack;
 	//Set its push bit.
-	// possibly implement pop to un-set the bit
-	// for the sake of generating the maze, All index will be pushed in once
-	// Therefore the Stack size doesnt need to be big
-
 }
 char stempty() {
 	if (stStack.iTop == -1)
@@ -101,21 +67,6 @@ char stempty() {
 /* pass in address of global struct to represent current row and column
 then store the row and column in it.  This can merge into one with reg
 */
-void popRowColumn(struct stRowColumn *pgstRowColumn) {
-	if (stempty())
-	{
-		// cant pop is theres nothing
-	}
-	else
-	{
-		(*pgstRowColumn).cRow = stStack.cRow[stStack.iTop]; // Two different ways of accessing
-		// pgstRowColumn->cRow = stStack.cRow[stStack.iTop];
-		pgstRowColumn->cColumn = stStack.cColumn[stStack.iTop];
-		GeneratedWall[stStack.cRow[stStack.iTop]][stStack.cColumn[stStack.iTop]] &= (~enInStack);
-		stStack.iTop--;
-	}
-	
-}
 void popRegRowColumn(struct stRowColumn *pgstRowColumn) {
 	if (stempty())
 	{

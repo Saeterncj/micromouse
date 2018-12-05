@@ -15,17 +15,19 @@ int main(void)
 	initStack();
 	initWall();
 	initGeneratedWall();
+	//displayRealGeneratedWall();
+	system("Pause");
 	GenerateWall();
 
 
-	displayRealGeneratedWall();
+	//displayRealGeneratedWall();
 	displayGeneratedWall();
 	system("Pause");
 
 
 
 	displayWall();
-	displayRealWall();
+	//displayRealWall();
 	initGoalMaze(ucDesiredRow, ucDesiredCol);
 	displayMaze();
 
@@ -116,7 +118,7 @@ int main(void)
 	ucDesiredCol = 7;
 	initGoalMaze(ucDesiredRow, ucDesiredCol);
 	displayRealWallNum();
-	displayRealWall();
+	//displayRealWall();
 	system("Pause");
 	
 	printf(" Im in here for now\n");
@@ -125,7 +127,7 @@ int main(void)
 	printf(" I never got here\n");
 	displayMaze();
 	displayRealWallNum();
-	displayRealWall();
+	//displayRealWall();
 	system("Pause");
 
 

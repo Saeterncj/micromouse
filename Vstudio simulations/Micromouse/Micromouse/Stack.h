@@ -62,13 +62,11 @@ struct stRowColumn {
 		The following are for Stack.c
 */
 void display();	
-void popRowColumn(struct stRowColumn *pgstRowColumn);
 void popRegRowColumn(struct stRowColumn *pgstRowColumn);
-void pushRegRowColumn(int row, int column);
 char stempty();
 uint8_t stSize(void);
 void popIndex(struct stRowColumn *pgstRowColumn, uint8_t index);
-void pushRowColumn(int row, int column);
+void pushRowColumn(int row, int column,bool isGeneratingWall);
 char isFull(); 
 void initStack();
 /*----------------------------------------------------------------------------

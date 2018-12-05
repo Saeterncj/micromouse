@@ -64,21 +64,21 @@ void AdjacentWalls()//IF find wall look for adjacent cells to wall discoverd
 {
 	if (((GeneratedWall[gstRowColumn.cRow][gstRowColumn.cColumn]&enNorth) == enNorth) && (gstRowColumn.cRow != 0)) {  //Includes boundaries!!!
 
-		pushRegRowColumn(gstRowColumn.cRow - 1, gstRowColumn.cColumn);
+		pushRowColumn(gstRowColumn.cRow - 1, gstRowColumn.cColumn, false);
 		if (Wall[gstRowColumn.cRow - 1][gstRowColumn.cColumn]<16) // if not visited
 		{
 			Wall[gstRowColumn.cRow - 1][gstRowColumn.cColumn] |= 4;
 		}
 	}//push maze[row coordinate-1][gstRowColumn.cColumn]
 	if ((GeneratedWall[gstRowColumn.cRow][gstRowColumn.cColumn] &enEast) == enEast && (gstRowColumn.cColumn != 15)) {
-		pushRegRowColumn(gstRowColumn.cRow, gstRowColumn.cColumn + 1);
+		pushRowColumn(gstRowColumn.cRow, gstRowColumn.cColumn + 1,false);
 		if (Wall[gstRowColumn.cRow][gstRowColumn.cColumn + 1]<16)
 		{
 			Wall[gstRowColumn.cRow][gstRowColumn.cColumn + 1] |= 8;
 		}
 	} //push maze[row coordinate][ col coordinate+1]
 	if ((GeneratedWall[gstRowColumn.cRow][gstRowColumn.cColumn] &enSouth) == enSouth && (gstRowColumn.cRow != 15)) {
-		pushRegRowColumn(gstRowColumn.cRow +1, gstRowColumn.cColumn);
+		pushRowColumn(gstRowColumn.cRow +1, gstRowColumn.cColumn, false);
 		if (Wall[gstRowColumn.cRow + 1][gstRowColumn.cColumn]<16)
 		{
 			Wall[gstRowColumn.cRow + 1][gstRowColumn.cColumn] |= 1;
@@ -86,7 +86,7 @@ void AdjacentWalls()//IF find wall look for adjacent cells to wall discoverd
 	} //push maze[row coordinate+1][ col coordinate]
 	if (((GeneratedWall[gstRowColumn.cRow][gstRowColumn.cColumn] &enWest) == enWest) && (gstRowColumn.cColumn != 0)) {
 
-		pushRegRowColumn(gstRowColumn.cRow, gstRowColumn.cColumn- 1);
+		pushRowColumn(gstRowColumn.cRow, gstRowColumn.cColumn- 1, false);
 		if (Wall[gstRowColumn.cRow][gstRowColumn.cColumn - 1]<16)
 		{
 			Wall[gstRowColumn.cRow][gstRowColumn.cColumn - 1] |= 2;
@@ -142,19 +142,19 @@ void pushOpenNeighbors(void) {
 	uint8_t col = gstRowColumn.cColumn;
 	if (!(Wall[row][col] & enNorth))
 	{
-		pushRegRowColumn(row -  1, col);
+		pushRowColumn(row -  1, col, false);
 	}
 	if ( !(Wall[row][col] & enEast))
 	{
-		pushRegRowColumn(row, col+1);
+		pushRowColumn(row, col+1, false);
 	}
 	if (!(Wall[row][col] & enSouth ))
 	{
-		pushRegRowColumn(row + 1, col);
+		pushRowColumn(row + 1, col, false);
 	}
 	if (!(Wall[row][col] & enWest))
 	{
-		pushRegRowColumn(row, col - 1);
+		pushRowColumn(row, col - 1, false);
 	}
 
 	// 
@@ -181,7 +181,7 @@ void floodFill(uint8_t DesiredRow, uint8_t DesiredCol,uint8_t initRow, uint8_t i
 			Wall[gstRowColumn.cRow][gstRowColumn.cColumn + 1] |= (GeneratedWall[gstRowColumn.cRow][gstRowColumn.cColumn+ 1] & enWest);
 
 			Wall[gstRowColumn.cRow][gstRowColumn.cColumn] |= enVisited;
-			pushRegRowColumn(gstRowColumn.cRow, gstRowColumn.cColumn);
+			pushRowColumn(gstRowColumn.cRow, gstRowColumn.cColumn, false);
 			ucCurrentColumn = gstRowColumn.cColumn;
 			ucCurrentRow = gstRowColumn.cRow;
 			AdjacentWalls();
@@ -210,10 +210,12 @@ void floodFill(uint8_t DesiredRow, uint8_t DesiredCol,uint8_t initRow, uint8_t i
 		else if (enDesiredState == enEast) { gstRowColumn.cColumn++; }
 		else if (enDesiredState == enSouth) { gstRowColumn.cRow++; }
 		else if (enDesiredState == enWest) { gstRowColumn.cColumn--; }
+		displayRealGeneratedWall(gstRowColumn.cRow, gstRowColumn.cColumn,DesiredRow, DesiredCol);
+		displayRealWall(gstRowColumn.cRow, gstRowColumn.cColumn, DesiredRow, DesiredCol, enDesiredState);
 
-
-		printf("current Row: %d \t Current Col: %d\n\n", gstRowColumn.cRow, gstRowColumn.cColumn);
+		//printf("current Row: %d \t Current Col: %d\n\n", gstRowColumn.cRow, gstRowColumn.cColumn);
 		system("pause");
+		system("CLS");
 	}
 
 }
