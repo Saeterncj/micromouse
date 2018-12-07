@@ -1,14 +1,5 @@
 ﻿  main.c
-c:\users\dell\desktop\micromousegit\vstudio simulations\micromouse\micromouse\main.c(14): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
-  floodfill.c
-  Stack.c
-  ReceiveBT.c
-c:\users\dell\desktop\micromousegit\vstudio simulations\micromouse\micromouse\receivebt.c(77): warning C4098: 'getSetData': 'void' function returning a value
-  Maze.c
-c:\users\dell\desktop\micromousegit\vstudio simulations\micromouse\micromouse\maze.c(86): warning C4101: 'ucColumn': unreferenced local variable
-c:\users\dell\desktop\micromousegit\vstudio simulations\micromouse\micromouse\maze.c(86): warning C4101: 'ucRow': unreferenced local variable
-  GenerateMaze.c
-c:\users\dell\desktop\micromousegit\vstudio simulations\micromouse\micromouse\generatemaze.c(245): warning C4101: 'randNum': unreferenced local variable
-  Generating Code...
+c:\users\dell\desktop\micromousegit\vstudio simulations\micromouse\micromouse\main.c(9): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\desktop\micromousegit\vstudio simulations\micromouse\micromouse\main.c(19): warning C4244: 'function': conversion from 'time_t' to 'unsigned int', possible loss of data
   Micromouse.vcxproj -> C:\Users\Dell\Desktop\MicromouseGit\Vstudio simulations\Micromouse\Debug\Micromouse.exe
   Micromouse.vcxproj -> C:\Users\Dell\Desktop\MicromouseGit\Vstudio simulations\Micromouse\Debug\Micromouse.pdb (Partial PDB)

@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include "Stack.h"
 #include "System.h"
+#include <time.h>
 
-
+void wait(unsigned timeout)
+{
+	timeout += clock();
+	while (clock() < timeout) continue;
+}
 
 int main(void)
 {
@@ -12,33 +17,32 @@ int main(void)
 	uint8_t ucCurrentRow = 15, ucCurrentCol = 0;
 	uint8_t ucRow, ucColumn;
 	srand(time(NULL));
-	initStack();
-	initWall();
-	initGeneratedWall();
-	//displayRealGeneratedWall();
-	system("Pause");
-	GenerateWall();
+	initStack();	// init stack for generating wall 
+	initWall();		// init our robot walls so it has empty wall except the boundaries
+	initGeneratedWall();	// init generated wall to have walls on all cells
+	GenerateWall();			// generate the whole maze
+	displayRealGeneratedWall(ucCurrentRow, ucCurrentCol, ucDesiredRow, ucDesiredCol);	// display the solvable maze that was generated
+	printf("Press Enter:\n");
+	getchar();
+	//system("Pause");
 
-
-	//displayRealGeneratedWall();
-	displayGeneratedWall();
-	system("Pause");
-
-
-
+	printf("These values represent the robot current knowledge of the maze using bitmap\n");
 	displayWall();
-	//displayRealWall();
 	initGoalMaze(ucDesiredRow, ucDesiredCol);
+	printf("These values represent the true distance of each cell to the goal\n");
 	displayMaze();
 
 
 
 	initStack();
 	floodFill(ucDesiredRow, ucDesiredCol, ucCurrentRow, ucCurrentCol);
-	displayMaze();
+	//displayMaze();
 	//displayRealWall();
+	printf("Display of the true distance of each cell given the knew knowledge the robot learned\n");
 	displayRealWallNum();
-	system("Pause");
+	printf("Press Enter:\n");
+	getchar();
+	//system("Pause");
 
 	// **********************************************************
 	for (ucRow = 0; ucRow < MAX_RC_SIZE; ucRow++)
@@ -59,7 +63,9 @@ int main(void)
 	displayMaze();
 	//displayRealWall();
 	displayRealWallNum();
-	system("Pause");
+	printf("Press Enter:\n");
+	getchar();
+	//system("Pause");
 	
 	// **********************************************************
 	for (ucRow = 0; ucRow < MAX_RC_SIZE; ucRow++)
@@ -80,7 +86,9 @@ int main(void)
 	displayMaze();
 	//displayRealWall();
 	displayRealWallNum();
-	system("Pause");
+	printf("Press Enter:\n");
+	getchar();
+	//system("Pause");
 	// **********************************************************
 	for (ucRow = 0; ucRow < MAX_RC_SIZE; ucRow++)
 	{
@@ -100,7 +108,9 @@ int main(void)
 	displayMaze();
 	//displayRealWall();
 	displayRealWallNum();
-	system("Pause");
+	printf("Press Enter:\n");
+	getchar();
+	//system("Pause");
 
 	// **********************************************************
 	for (ucRow = 0; ucRow < MAX_RC_SIZE; ucRow++)
@@ -119,7 +129,9 @@ int main(void)
 	initGoalMaze(ucDesiredRow, ucDesiredCol);
 	displayRealWallNum();
 	//displayRealWall();
-	system("Pause");
+	//system("Pause");
+	printf("Press Enter:\n");
+	getchar();
 	
 	printf(" Im in here for now\n");
 	printf("current Row: %d \t Current Col: %d\n\n", ucCurrentRow, ucCurrentCol);
@@ -128,8 +140,7 @@ int main(void)
 	displayMaze();
 	displayRealWallNum();
 	//displayRealWall();
-	system("Pause");
-
-
-
+	//system("Pause");
+	printf("Press Enter:\n");
+	getchar();
 }

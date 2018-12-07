@@ -168,6 +168,13 @@ void floodFill(uint8_t DesiredRow, uint8_t DesiredCol,uint8_t initRow, uint8_t i
 	ucCurrentColumn = initCol;
 	gstRowColumn.cRow = initRow;
 	gstRowColumn.cColumn = initCol;
+	int runAuto, waitTime;
+	printf("Do you want to run auto or iterate yourself?(1 for auto,0 for yourself)\n");
+	scanf("%d", &runAuto);
+	if (runAuto) {
+		printf("Enter your delay for each iteration in millisecs.\n");
+		scanf("%d", &waitTime);
+	}
 	//While not at center
 	while (!((gstRowColumn.cRow == DesiredRow) && (gstRowColumn.cColumn == DesiredCol)))	// While not at goal
 	{
@@ -198,7 +205,6 @@ void floodFill(uint8_t DesiredRow, uint8_t DesiredCol,uint8_t initRow, uint8_t i
 						
 					}
 				}
-
 			}
 			gstRowColumn.cRow = ucCurrentRow;
 			gstRowColumn.cColumn = ucCurrentColumn;
@@ -213,8 +219,10 @@ void floodFill(uint8_t DesiredRow, uint8_t DesiredCol,uint8_t initRow, uint8_t i
 		displayRealGeneratedWall(gstRowColumn.cRow, gstRowColumn.cColumn,DesiredRow, DesiredCol);
 		displayRealWall(gstRowColumn.cRow, gstRowColumn.cColumn, DesiredRow, DesiredCol, enDesiredState);
 
-		//printf("current Row: %d \t Current Col: %d\n\n", gstRowColumn.cRow, gstRowColumn.cColumn);
-		system("pause");
+		// if it is runAuto then we let it iterate with a delay of waitTime in milliseconds
+		// else we wait for user to press enter for the next iteration.
+		if (runAuto) wait(waitTime);
+		else  getchar();
 		system("CLS");
 	}
 
