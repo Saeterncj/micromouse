@@ -77,7 +77,7 @@ void popRegRowColumn(struct stRowColumn *pgstRowColumn) {
 		(*pgstRowColumn).cRow = stStack.cRow[stStack.iTop]; // Two different ways of accessing
 															// pgstRowColumn->cRow = stStack.cRow[stStack.iTop];
 		pgstRowColumn->cColumn = stStack.cColumn[stStack.iTop];
-		Wall[stStack.cRow[stStack.iTop]][stStack.cColumn[stStack.iTop]] &= (~enInStack);
+		Wall[stStack.cRow[stStack.iTop]][stStack.cColumn[stStack.iTop]] &= (~enInStack); // no longer in stack
 		stStack.iTop--;
 	}
 
